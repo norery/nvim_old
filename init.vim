@@ -7,13 +7,16 @@
 
 
 " ===
-" === Auto load for first time uses
+" === Auto load for first time uses == 有待验证
 " ===
-"if empty(glob('~/.vim/autoload/plug.vim'))
-"	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-"				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-"	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-"endif
+if empty(glob('~/.config/nvim/bundle/Vundle.vim'))
+	silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
+	autocmd VimEnter * PluginInstall --sync | source $MYVIMRC
+endif
+
+if empty(glob('~/.config/nvim/bundle/wildfire.vim/autoload/wildfire.vim'))
+	autocmd VimEnter * PluginInstall --sync | source $MYVIMRC
+endif
 
 "==============================    一、基础设置    ==============================
 syntax on            "打开代码高亮:
