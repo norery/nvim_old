@@ -5,6 +5,42 @@
 
 需要特地说明的是，本人目前使用的是 macOS 系统，终端工具使用的是 iterm2，shell 用的是 zsh & oh-my-zsh。得益于 macOS 上出色的包管理工具：Homebrew，在安装很多程序时都很方便。linux 和 windows 用户可能需要自己另外查阅相关文档进行安装。
 
+<!-- vim-markdown-toc GFM -->
+
+* [一些软件的安装与配置](#一些软件的安装与配置)
+  * [neovim 的安装与配置](#neovim-的安装与配置)
+  * [ranger 的安装与配置](#ranger-的安装与配置)
+    * [devicons 插件 - 图标显示](#devicons-插件---图标显示)
+* [vim 插件的安装与使用](#vim-插件的安装与使用)
+  * [Vundle 插件管理器](#vundle-插件管理器)
+  * [vim 美化插件](#vim-美化插件)
+    * [vim-startify](#vim-startify)
+    * [vim-ariline](#vim-ariline)
+    * [vim-devicons](#vim-devicons)
+    * [goyo 阅读模式](#goyo-阅读模式)
+    * [gruvbox 主题配色](#gruvbox-主题配色)
+  * [vim 代码相关](#vim-代码相关)
+    * [写 Latex 必备 -vimtex](#写-latex-必备--vimtex)
+    * [代码补全神器 -coc.vim](#代码补全神器--cocvim)
+    * [vim-commentary 快速注释代码](#vim-commentary-快速注释代码)
+    * [snippets](#snippets)
+    * [vim-indent-guides](#vim-indent-guides)
+  * [文本快速编辑](#文本快速编辑)
+    * [vim-surround](#vim-surround)
+    * [wildfire.vim](#wildfirevim)
+    * [vim-visual-multi](#vim-visual-multi)
+  * [markdown写作](#markdown写作)
+    * [vim-instant-markdown](#vim-instant-markdown)
+    * [vim-markdown-toc](#vim-markdown-toc)
+    * [vim-table-mode](#vim-table-mode)
+    * [vim-barbaric 中英文自动切换](#vim-barbaric-中英文自动切换)
+  * [缓冲区内导航](#缓冲区内导航)
+    * [easymotion](#easymotion)
+  * [文件浏览及窗口管理](#文件浏览及窗口管理)
+    * [nerdtree](#nerdtree)
+    * [Tagbar](#tagbar)
+
+<!-- vim-markdown-toc -->
 ## 一些软件的安装与配置
 ### neovim 的安装与配置
 
@@ -91,9 +127,9 @@ brew install --cask font-hack-nerd-font
 git clone https://github.com/alexanderjeurissen/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
 ```
 在 iterm2 的 Preference-Profiles-Text 中将 Non-ASCII 字体设置为下载的字体：Hack Nerd Font Mono
+
 > 找不到大家说的 nerd-fonts-source-code-pro 字体？
 
-![-w1011](media/16262480835026/16262734923911.jpg)
 ## vim 插件的安装与使用
 ### Vundle 插件管理器
 [VundleVim/Vundle.vim](https://github.com/VundleVim/Vundle.vim) 是目前我正在使用的插件管理器，使用下来，我认为和 vim-plug 的使用体验相当，在插件安装目录和命令有所不同。
@@ -140,12 +176,22 @@ Plugin 'ryanoasis/vim-devicons'
 ```vim
 set encoding=UTF-8
 ```
+
+#### goyo 阅读模式
+[goyo](https://github.com/junegunn/goyo.vim)可以将vim变成一个在视觉中心的编辑器，使阅读更为专注。
+```vim
+Plugin 'junegunn/goyo.vim'
+```
+自定义快捷键：
+```
+map <LEADER>gy : Goyo<CR>
+```
+作者说与[limelight](https://github.com/junegunn/limelight.vim)配合使用体验更佳，只是我在尝试limelight时遇到了奇怪的bug，高亮不能随着光标移动，目前还没找到解决的方法。
 #### gruvbox 主题配色
 [morhetz/gruvbox](https://github.com/morhetz/gruvbox) 是我比较喜欢的一款 vim 配色，还有一款比较喜欢的配色方案是 [Solarized](https://github.com/altercation/vim-colors-solarized)。
 ```vim
 Plugin 'morhetz/gruvbox'
 ```
-![-w1430](media/16264047495637/16264110417861.jpg)
 在 vim 中配置如下：
 ```vim
 syntax enable
@@ -194,6 +240,15 @@ let g:coc_global_extensions = [
 + `Coclist extensions`：查看已安装的 coc 扩展
 + `CocUninstall coc-css`：卸载插件
 
+#### vim-commentary 快速注释代码
+[vim-commentary](https://github.com/tpope/vim-commentary) 是一个比较轻量的代码注释插件，可以根据语言的不同自动选择注释。
+```vim
+Plugin 'tpope/vim-commentary'
+```
+
++ 对于单行，normal 模式下使用gcc进行注释和取消注释
++ 对于多行，visual 模式下使用gc进行注释和取消注释
+
 #### snippets
 可以使用 [Ultisnips](https://github.com/SirVer/ultisnips) 插件来获得 vim 中的 snips 支持，但是 coc 中也集成了很好用的 snips 插件：coc-snippets，结合 vim-snips 插件来获得各种语言的已有的 snips，可以获得很好的体验。
 
@@ -241,13 +296,86 @@ Plugin 'gcmt/wildfire.vim'
 Plugin 'mg979/vim-visual-multi', {'branch': 'master'}
 ```
 
+### markdown写作
+#### vim-instant-markdown
+[vim-instant-markdown](https://github.com/instant-markdown/vim-instant-markdown) 为vim提供了markdwon的渲染解决方案，当使用vim打开一个markdwon文件时，会打开一个浏览器窗口并实时显示编译后的文件，在vim关闭文件后渲染窗口也会关闭。预览时的样式为github样式。
+
+安装前需要首先安装 Node.js mini-server：
+```shell
+npm -g install instant-markdown-d
+```
+当然首先要安装好npm，然后在vim配置文件中添加：
+```vim
+Plugin 'instant-markdown/vim-instant-markdown'
+```
+
+#### vim-markdown-toc
+[vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc) 是一款同时支持 GFM 和 Redcarpet 两种 TOC 链接风格的 Table of Contents 自动生成插件。
+
+```vim
+Plugin 'mzlogin/vim-markdown-toc'
+```
+
+将光标移动到想在后面插入 Table of Contents 的那一行，然后运行：
++ `:GenTocGFM`: 生成 GFM 链接风格的 Table of Contents。
+  + 适用于 GitHub 仓库里的 Markdown 文件，比如 README.md，也适用用于生成 GitBook 的 Markdown 文件。
+
++ `:GenTocRedcarpet`: 生成 Redcarpet 链接风格的 Table of Contents。
+  + 适用于使用 Redcarpet 作为 Markdown 引擎的 Jekyll 项目或其它地方。
+
+#### vim-table-mode
+vim-table-mode 是一个自动表格格式化插件。在其 [Github](https://github.com/dhruvasagar/vim-table-mode) 中有详细的教程，简单来说就是使用`<leader>tm`打开Table Mode，然后第一行输入`|name|adress|phone|`，第二行输入两个`|`，第三行以后在每输入一格后加一个`|`，插件会自动将表的格式刷新排列好。
+
+#### vim-barbaric 中英文自动切换
+vim-barbaric 是一款帮助用户自动设置输入法模式的插件。在 macOS 下，需要额外安装 xkbswitch-macosx：
+```shell
+curl -o /usr/local/bin/xkbswitch https://raw.githubusercontent.com/myshov/xkbswitch-macosx/master/bin/xkbswitch
+```
+遇到下不下来的情况，可以克隆该项目的 [Github](https://github.com/rlue/vim-barbaric) 仓库，然后将可执行文件拷贝到`/usr/bin`中：
+```shell
+git clone https://github.com/myshov/xkbswitch-macosx.git
+cp ~/Downloads/xkbswitch-macosx/bin/xkbswitch /usr/local/bin
+```
+然后安装该插件即可，开箱即用：
+```vim
+Plugin 'rlue/vim-barbaric'
+```
+替代方案有: [vim-xkbswitch](https://jdhao.github.io/2021/02/25/nvim_ime_mode_auto_switch/)
+
+### 缓冲区内导航
+#### easymotion
+easymotion从版本2.0开始由haya14busa接管，增加了很多有用的新功能，非常值得学习使用。
+```vim
+Plugin 'easymotion/vim-easymotion'
+```
+vimrc中的配置：
+```
+" 按下ss后，再输入自己要找的两个字符，等同于`LEADER``LEADER`ss
+nmap ss <Plug>(easymotion-s2)
+“ 按下s后，输入要找的一个字符
+nmap s <Plug>(easymotion-s)
+“ 默认使用两次`leadr`键，再加w键，可以对所有单词进行编号，下一行就是默认配置，貌似只能寻找后面的
+map <Leader> <Plug>(easymotion-prefix)
+```
+
 ### 文件浏览及窗口管理
 #### nerdtree
-[preservim/nerdtree](https://github.com/preservim/nerdtree), 使用此插件，用户可以直观地浏览复杂的目录层次结构，快速打开文件进行读取或编辑，并执行基本的文件系统操作。自定义使用 `<Leader>v` 打开 nerdtree。
+使用 [preservim/nerdtree](https://github.com/preservim/nerdtree) 插件, 用户可以直观地浏览复杂的目录层次结构，快速打开文件进行读取或编辑，并执行基本的文件系统操作。自定义使用 `<Leader>v` 打开 nerdtree。
+
 ```vim
 Plugin 'preservim/nerdtree'
 ```
 
+#### Tagbar
+[preservim/tagbar](https://github.com/preservim/tagbar) 提供了一种简单的方法来浏览当前文件的标签并获得结构的概览。通过创建一个侧边栏来显示当前文件的ctags生成的标签。安装tagbar需要ctags4.5以上的依赖环境，mac用户执行以下命令安装：
+```shell
+brew tap universal-ctags/universal-ctags
+brew install --HEAD universal-ctags
+```
+使用Vundle安装：
+```vim
+Plugin 'preservim/tagbar'
+```
 
 
 

@@ -59,13 +59,13 @@ set autochdir
 " 新打开vim时，光标处于上次退出时的位置，有用!
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 " 开关拼写检查：
-map <LEADER>sc :set spell!<CR>
+" map <LEADER>sc :set spell!<CR>
 
 " press space twice to jump to the next '<++>' and edit it, 有什么用啊
-map <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
+"map <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
 
 " 调用figlet????
-map tx :r !figlet
+" map tx :r !figlet
 "==============================  二、键位映射  ==============================
 " vim下有个leader键，默认是反斜杠，就好像是win键，但是vim下空格键用处不大，所以可以将leader键设置为空格键。
 let mapleader=" "
@@ -135,10 +135,21 @@ Plugin 'neoclide/coc.nvim', {'branch': 'release'}
 Plugin 'morhetz/gruvbox'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'yggdroot/indentline'
-Plugin 'terryma/vim-multiple-cursors'
+Plugin 'mg979/vim-visual-multi', {'branch': 'master'}
 "Plugin 'SirVer/ultisnips'   " Track the engine.
 " Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
+"Plugin 'nathanaelkane/vim-indent-guides'
+" Markdown
+Plugin 'instant-markdown/vim-instant-markdown'
+Plugin 'dhruvasagar/vim-table-mode'
+Plugin 'mzlogin/vim-markdown-toc'
+Plugin 'dkarter/bullets.vim'
+Plugin 'rlue/vim-barbaric'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'tpope/vim-commentary'
+Plugin 'junegunn/goyo.vim'
+" Plugin 'junegunn/limelight.vim'
 call vundle#end()
 filetype plugin indent on
 
@@ -268,7 +279,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 " nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <leader>rn <Plug>(coc-rename)
-nmap tt :CocCommand explorer<CR>
+" nmap tt :CocCommand explorer<CR>
 " coc-translator
 nmap ts <Plug>(coc-translator-p)
 " Remap for do codeAction of selected region
@@ -285,14 +296,14 @@ nmap <leader>aw  <Plug>(coc-codeaction-selected)w
 noremap <silent> <leader>ts :CocList tasks<CR>
 " coc-snippets
 imap <C-u> <Plug>(coc-snippets-expand)
+imap <C-e> <Plug>(coc-snippets-expand-jump)
 vmap <C-j> <Plug>(coc-snippets-select)
+" 选择预先设计的空位进行编辑
 let g:coc_snippet_next = '<c-j>'
 let g:coc_snippet_prev = '<c-k>'
-imap <C-e> <Plug>(coc-snippets-expand-jump)
 let g:snips_author = 'TinTingo'
 autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
 
-" TODO: 熟练使用snippets <15-07-21, TinTingo> "
 "------------------------------  Ultisnips  ------------------------------
 " ===
 " === Ultisnips
@@ -327,10 +338,9 @@ autocmd WinEnter * silent! unmap <LEADER>ig
 
 
 " ===
-" === Goyo
+" === Goyo and limelight
 " === 
 map <LEADER>gy :Goyo<CR>
-
 
 " ===
 " === vim-signature
@@ -408,8 +418,10 @@ let NERDTreeIgnore = [
 " ===
 " === easymotion
 " === 
+" 寻找2个字符
 nmap ss <Plug>(easymotion-s2)
-
+nmap s <Plug>(easymotion-s)
+map <Leader> <Plug>(easymotion-prefix)
 " ===
 " === python-mode
 " === 
@@ -436,6 +448,11 @@ set completeopt-=preview
 " === 
 set updatetime=100
 
+" ===
+" === vim-xkbswitch
+" === 自动切换中英文输入法
+"let g:XkbSwitchEnabled = 1
+
 "==============================  六、主题配置  ==============================
 " 需要把主题配置的命令放在vundle等插件管理器初始化的后面才能保证一进入vim就可以有颜色，如果放在前面的话，进入vim后需要shift+r刷新一下才能有颜色。
 syntax enable
@@ -449,7 +466,7 @@ syntax enable
 " ===
 " ===
 "set background=dark
-let g:gruvbox_contrast_dark='medium'
+let g:gruvbox_contrast_dark='soft'
 let g:gruvbox_contrast_light='hard'
 autocmd vimenter * ++nested colorscheme gruvbox
 nnoremap <Leader>bd :set background=dark<CR>
