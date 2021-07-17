@@ -7,7 +7,7 @@
 
 
 " ===
-" === Auto load for first time uses == 有待验证
+" === Auto load for first time uses
 " ===
 if empty(glob('~/.config/nvim/bundle/Vundle.vim'))
 	silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
@@ -19,13 +19,14 @@ if empty(glob('~/.config/nvim/bundle/wildfire.vim/autoload/wildfire.vim'))
 endif
 
 "==============================    一、基础设置    ==============================
-syntax on            "打开代码高亮:
-set number           "打开行号显示:
-set cursorline       " 在当前行下显示一条线:
-set wrap             " 让字不会超出当前窗口，自动到下一行:
-set showcmd          " 让底下的一栏显示当前打出的字母：
-set wildmenu         " 在命令模式时自动代码补全：
-set hlsearch         " 设置搜索高亮：
+syntax on          " 打开代码高亮:
+set number         " 打开行号显示:
+set relativenumber " 仅显示当前行数，其余显示距当前行的距离
+set cursorline     " 在当前行下显示一条线:
+set wrap           " 让字不会超出当前窗口，自动到下一行:
+set showcmd        " 让底下的一栏显示当前打出的字母：
+set wildmenu       " 在命令模式时自动代码补全：
+set hlsearch       " 设置搜索高亮：
 " 每次打开一个文件，不会高亮之前的显示结果:
 exec "nohlsearch"    
 set incsearch        " 设置边输入边高亮：
@@ -134,12 +135,13 @@ Plugin 'tpope/vim-surround' " type yskw' to wrap the word with '' or type cs'` t
 Plugin 'neoclide/coc.nvim', {'branch': 'release'}
 Plugin 'morhetz/gruvbox'
 Plugin 'ryanoasis/vim-devicons'
-Plugin 'yggdroot/indentline'
+" Plugin 'yggdroot/indentline'
 Plugin 'mg979/vim-visual-multi', {'branch': 'master'}
 "Plugin 'SirVer/ultisnips'   " Track the engine.
 " Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
-"Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'hdima/python-syntax'
+Plugin 'nathanaelkane/vim-indent-guides'
 " Markdown
 Plugin 'instant-markdown/vim-instant-markdown'
 Plugin 'dhruvasagar/vim-table-mode'
@@ -148,9 +150,17 @@ Plugin 'dkarter/bullets.vim'
 Plugin 'rlue/vim-barbaric'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-commentary'
+" Plugin 'preservim/nerdcommenter'
 Plugin 'junegunn/goyo.vim'
 " Plugin 'junegunn/limelight.vim'
 Plugin 'mbbill/undotree'
+Plugin 'liuchengxu/vista.vim'
+Plugin 'junegunn/vim-easy-align'
+Plugin 'vim-autoformat/vim-autoformat'
+Plugin 'kevinhwang91/rnvimr'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'jiangmiao/auto-pairs'
+
 call vundle#end()
 filetype plugin indent on
 
@@ -217,6 +227,7 @@ let g:coc_global_extensions = [
 	\ 'coc-jedi',
   \ 'coc-syntax',
   \ 'coc-snippets',
+  \ 'coc-translator',
   \ 'coc-actions' ]
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
@@ -326,7 +337,7 @@ autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
 " ===
 " === python-syntax
 " ===
-"let g:python_highlight_all = 1
+let g:python_highlight_all = 1
 
 " ===
 " === vim-indent-guides
@@ -343,34 +354,6 @@ autocmd WinEnter * silent! unmap <LEADER>ig
 " === Goyo and limelight
 " === 
 map <LEADER>gy :Goyo<CR>
-
-" ===
-" === vim-signature
-" ===
-let g:SignatureMap = {
-        \ 'Leader'             :  "m",
-        \ 'PlaceNextMark'      :  "m,",
-        \ 'ToggleMarkAtLine'   :  "m.",
-        \ 'PurgeMarksAtLine'   :  "dm-",
-        \ 'DeleteMark'         :  "dm",
-        \ 'PurgeMarks'         :  "dm/",
-        \ 'PurgeMarkers'       :  "dm?",
-        \ 'GotoNextLineAlpha'  :  "m<LEADER>",
-        \ 'GotoPrevLineAlpha'  :  "",
-        \ 'GotoNextSpotAlpha'  :  "m<LEADER>",
-        \ 'GotoPrevSpotAlpha'  :  "",
-        \ 'GotoNextLineByPos'  :  "",
-        \ 'GotoPrevLineByPos'  :  "",
-        \ 'GotoNextSpotByPos'  :  "mn",
-        \ 'GotoPrevSpotByPos'  :  "mp",
-        \ 'GotoNextMarker'     :  "",
-        \ 'GotoPrevMarker'     :  "",
-        \ 'GotoNextMarkerAny'  :  "",
-        \ 'GotoPrevMarkerAny'  :  "",
-        \ 'ListLocalMarks'     :  "m/",
-        \ 'ListLocalMarkers'   :  "m?"
-        \ }
-
 
 " ===
 " === Undotree
@@ -419,22 +402,88 @@ let g:pymode_lint = 1
 let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe', 'pylint']
 let g:pymode_options_max_line_length = 120
 
+" ===
+" === Vista.vim
+" ===
+noremap <LEADER>i :Vista!!<CR>
+noremap <c-t> :silent! Vista finder coc<CR>
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_default_executive = 'coc'
+let g:vista_fzf_preview = ['right:50%']
+let g:vista#renderer#enable_icon = 1
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
+" function! NearestMethodOrFunction() abort
+" 	return get(b:, 'vista_nearest_method_or_function', '')
+" endfunction
+" set statusline+=%{NearestMethodOrFunction()}
+" autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
+let g:scrollstatus_size = 15
 
 " ===
-" === deoplete 
-" === 
-let g:deoplete#enable_at_startup = 1
-set completeopt-=preview
+" === vim-easy-align
+" === 按某一字符多行对齐
+" 一般是可视模式下选中多行，按ga*=就可以按=对齐
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 " ===
-" === vim-gitgutter
-" === 
-set updatetime=100
+" === vim-autoformat
+" ===
+noremap tf :Autoformat<CR>
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+let g:autoformat_remove_trailing_spaces = 0
+" to disable autoindent for filetypes that have incompetent indent files, use
+autocmd FileType vim,tex let b:autoformat_autoindent=0
 
 " ===
-" === vim-xkbswitch
-" === 自动切换中英文输入法
-"let g:XkbSwitchEnabled = 1
+" === rnvimr
+" === 同时打开nerdtree和rnvimr时会有bug
+let g:rnvimr_ex_enable = 1
+let g:rnvimr_pick_enable = 1
+let g:rnvimr_draw_border = 0
+" let g:rnvimr_bw_enable = 1
+highlight link RnvimrNormal CursorLine
+nnoremap <silent> <LEADER>r :RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
+let g:rnvimr_action = {
+            \ '<C-t>': 'NvimEdit tabedit',
+            \ '<C-x>': 'NvimEdit split',
+            \ '<C-v>': 'NvimEdit vsplit',
+            \ 'gw': 'JumpNvimCwd',
+            \ 'yw': 'EmitRangerCwd'
+            \ }
+let g:rnvimr_layout = { 'relative': 'editor',
+            \ 'width': &columns,
+            \ 'height': &lines,
+            \ 'col': 0,
+            \ 'row': 0,
+            \ 'style': 'minimal' }
+let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
+
+" ===
+" === vim.GitGutter
+" ===
+" let g:gitgutter_signs = 0
+let g:gitgutter_sign_allow_clobber = 0
+let g:gitgutter_map_keys = 0
+let g:gitgutter_override_sign_column_highlight = 0
+let g:gitgutter_preview_win_floating = 1
+let g:gitgutter_sign_added = '▎'
+let g:gitgutter_sign_modified = '░'
+let g:gitgutter_sign_removed = '▏'
+let g:gitgutter_sign_removed_first_line = '▔'
+let g:gitgutter_sign_modified_removed = '▒'
+" autocmd BufWritePost * GitGutter
+nnoremap <LEADER>gf :GitGutterFold<CR>
+nnoremap H :GitGutterPreviewHunk<CR>
+nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
+nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 
 "==============================  六、主题配置  ==============================
 " 需要把主题配置的命令放在vundle等插件管理器初始化的后面才能保证一进入vim就可以有颜色，如果放在前面的话，进入vim后需要shift+r刷新一下才能有颜色。
@@ -454,3 +503,5 @@ let g:gruvbox_contrast_light='hard'
 autocmd vimenter * ++nested colorscheme gruvbox
 nnoremap <Leader>bd :set background=dark<CR>
 nnoremap <Leader>bl :set background=light<CR>
+
+" TODO: 为何vundle插件自动下载的插件存放在.vim下？ <17-07-21, TinTingo> "
