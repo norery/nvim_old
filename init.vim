@@ -64,8 +64,8 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " press space twice to jump to the next '<++>' and edit it, 有什么用啊
 "map <LEADER><LEADER> <Esc>/<++><CR>:nohlsearch<CR>c4l
 
-" 调用figlet????
-" map tx :r !figlet
+" 调用figlet，生成艺术字
+map tx :r !figlet
 "==============================  二、键位映射  ==============================
 " vim下有个leader键，默认是反斜杠，就好像是win键，但是vim下空格键用处不大，所以可以将leader键设置为空格键。
 let mapleader=" "
@@ -150,6 +150,7 @@ Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-commentary'
 Plugin 'junegunn/goyo.vim'
 " Plugin 'junegunn/limelight.vim'
+Plugin 'mbbill/undotree'
 call vundle#end()
 filetype plugin indent on
 
@@ -256,7 +257,8 @@ function! Show_documentation()
 		call CocAction('doHover')
 	endif
 endfunction
-nnoremap <LEADER>h :call Show_documentation()<CR>
+" 与窗口切换的快捷键重了
+" nnoremap <LEADER>h :call Show_documentation()<CR>
 " 简化输入命令的方式
 nnoremap <silent><nowait> <LEADER>d :CocList diagnostics<cr>
 nmap <silent> <LEADER>- <Plug>(coc-diagnostic-prev)
@@ -381,25 +383,6 @@ map L :UndotreeToggle<CR>
 " ===
 let b:ale_linters = ['flake8','pylint']
 let b:ale_fixers = ['autopep8', 'yapf']
-
-
-" ===
-" === Tagbar
-" ===
-"文件侦查启动,用以检测文件的后缀
-filetyp off
-"安装tagbar插件
-"Bundle 'majutsushi/tagbar'
-"设置tagbar使用的ctags的插件,必须要设置对
-let g:tagbar_ctags_bin='/usr/bin/ctags'
-"设置tagbar的窗口宽度
-let g:tagbar_width=30
-"设置tagbar的窗口显示的位置,为左边1,右边０
-let g:tagbar_left=0
-"打开文件自动 打开tagbar
-autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx call tagbar#autoopen()
-"映射tagbar的快捷键
-nnoremap <leader>t :TagbarToggle<CR>
 
 " ===
 " === nerdtree

@@ -29,9 +29,10 @@
     * [vim-surround](#vim-surround)
     * [wildfire.vim](#wildfirevim)
     * [vim-visual-multi](#vim-visual-multi)
+    * [figlet](#figlet)
   * [markdown写作](#markdown写作)
     * [vim-instant-markdown](#vim-instant-markdown)
-    * [vim-markdown-toc](#vim-markdown-toc)
+    * [vim--toc](#vim--toc)
     * [vim-table-mode](#vim-table-mode)
     * [vim-barbaric 中英文自动切换](#vim-barbaric-中英文自动切换)
   * [缓冲区内导航](#缓冲区内导航)
@@ -296,6 +297,16 @@ Plugin 'gcmt/wildfire.vim'
 Plugin 'mg979/vim-visual-multi', {'branch': 'master'}
 ```
 
+#### figlet
+figlet不是一个vim Plugin，但是挺有趣的在这里也讲一下，快速生成ASCII艺术字的小程序，在macOS中安装：
+```shell
+brew install figlet
+```
+在vim中配置以下语句，可以按 tx 将输入的字快速生成为艺术字。
+```vim
+map tx :r !figlet
+```
+
 ### markdown写作
 #### vim-instant-markdown
 [vim-instant-markdown](https://github.com/instant-markdown/vim-instant-markdown) 为vim提供了markdwon的渲染解决方案，当使用vim打开一个markdwon文件时，会打开一个浏览器窗口并实时显示编译后的文件，在vim关闭文件后渲染窗口也会关闭。预览时的样式为github样式。
@@ -309,16 +320,16 @@ npm -g install instant-markdown-d
 Plugin 'instant-markdown/vim-instant-markdown'
 ```
 
-#### vim-markdown-toc
-[vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc) 是一款同时支持 GFM 和 Redcarpet 两种 TOC 链接风格的 Table of Contents 自动生成插件。
+#### vim--toc
+[vim--toc](https://github.com/mzlogin/vim--toc) 是一款同时支持 GFM 和 Redcarpet 两种 TOC 链接风格的 Table of Contents 自动生成插件。
 
 ```vim
-Plugin 'mzlogin/vim-markdown-toc'
+Plugin 'mzlogin/vim--toc'
 ```
 
 将光标移动到想在后面插入 Table of Contents 的那一行，然后运行：
 + `:GenTocGFM`: 生成 GFM 链接风格的 Table of Contents。
-  + 适用于 GitHub 仓库里的 Markdown 文件，比如 README.md，也适用用于生成 GitBook 的 Markdown 文件。
+  + 适用于 GitHub 仓库里的  文件，比如 README.md，也适用用于生成 GitBook 的  文件。 
 
 + `:GenTocRedcarpet`: 生成 Redcarpet 链接风格的 Table of Contents。
   + 适用于使用 Redcarpet 作为 Markdown 引擎的 Jekyll 项目或其它地方。
@@ -360,10 +371,23 @@ map <Leader> <Plug>(easymotion-prefix)
 
 ### 文件浏览及窗口管理
 #### nerdtree
-使用 [preservim/nerdtree](https://github.com/preservim/nerdtree) 插件, 用户可以直观地浏览复杂的目录层次结构，快速打开文件进行读取或编辑，并执行基本的文件系统操作。自定义使用 `<Leader>v` 打开 nerdtree。
+使用 [preservim/nerdtree](https://github.com/preservim/nerdtree) 插件, 用户可以直观地浏览复杂的目录层次结构，快速打开文件进行读取或编辑，并执行基本的文件系统操作。使用 `<Leader>v` 打开 nerdtree。
 
 ```vim
 Plugin 'preservim/nerdtree'
+```
+在vim配置中添加：
+```vim
+" open a nerdtree
+nnoremap <leader>v :NERDTreeFind<cr> 
+nnoremap <leader>g :NERDTreeToggle<cr>
+" 令nerdtree显示隐藏文件
+let NERDTreeShowHidden=1
+"忽略这些文件
+let NERDTreeIgnore = [
+            \ '\.git$', '\.hg$', '\.svn$', '\.stversions$', '\.pyc$', '\.pyo$', '\.svn$', '\.swp$',
+            \ '\.DS_Stores$', '\.sass-cache$', '__pycache__$', '\.egg-info$', '\.ropeprojects$',
+            \ ]
 ```
 
 #### Tagbar
@@ -372,10 +396,19 @@ Plugin 'preservim/nerdtree'
 brew tap universal-ctags/universal-ctags
 brew install --HEAD universal-ctags
 ```
+ctags的安装有些麻烦，上面两行命令报了好几个错，还安装了xcode，最终还是报错，目前先舍弃不用。
+
 使用Vundle安装：
 ```vim
 Plugin 'preservim/tagbar'
 ```
+TODO：
+1. 安装学会使用fzf
+2. 使用lazygit，vim中的git插件
+3. ranger教程的整理
+4. 将github的nvim仓库直接放到macOS的配置中
+5. 学习Tmux终端复用工具，弄好vim的窗口管理
+6. 提高iterm命令行的输入效率，学习整理zsh中的插件如autojump等的操作
 
 
 
