@@ -160,7 +160,8 @@ Plugin 'vim-autoformat/vim-autoformat'
 Plugin 'kevinhwang91/rnvimr'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'jiangmiao/auto-pairs'
-
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
 call vundle#end()
 filetype plugin indent on
 
@@ -485,6 +486,46 @@ nnoremap H :GitGutterPreviewHunk<CR>
 nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
 nnoremap <LEADER>g= :GitGutterNextHunk<CR>
 
+" ===
+" === FZF
+" ===
+" set rtp+=/usr/local/opt/fzf
+" set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
+" set rtp+=/home/david/.linuxbrew/opt/fzf
+" nnoremap <c-p> :Leaderf file<CR>
+noremap <silent> <C-p> :Files<CR>
+noremap <silent> <C-f> :Rg<CR>
+noremap <silent> <C-h> :History<CR>
+"noremap <C-t> :BTags<CR>
+" noremap <silent> <C-l> :Lines<CR>
+noremap <silent> <C-w> :Buffers<CR>
+noremap <leader>; :History:<CR>
+noremap <leader>c :Colors<CR>
+
+let g:fzf_preview_window = 'right:60%'
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+
+function! s:list_buffers()
+  redir => list
+  silent ls
+  redir END
+  return split(list, "\n")
+endfunction
+
+function! s:delete_buffers(lines)
+  execute 'bwipeout' join(map(a:lines, {_, line -> split(line)[0]}))
+endfunction
+
+command! BD call fzf#run(fzf#wrap({
+  \ 'source': s:list_buffers(),
+  \ 'sink*': { lines -> s:delete_buffers(lines) },
+  \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
+\ }))
+
+noremap <c-d> :BD<CR>
+
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
+let g:fzf_buffers_jump = 0
 "==============================  六、主题配置  ==============================
 " 需要把主题配置的命令放在vundle等插件管理器初始化的后面才能保证一进入vim就可以有颜色，如果放在前面的话，进入vim后需要shift+r刷新一下才能有颜色。
 syntax enable
@@ -497,7 +538,7 @@ syntax enable
 " === gruvbox主题配色
 " ===
 " ===
-"set background=dark
+set background=dark
 let g:gruvbox_contrast_dark='soft'
 let g:gruvbox_contrast_light='hard'
 autocmd vimenter * ++nested colorscheme gruvbox
