@@ -11,11 +11,11 @@
 " ===
 if empty(glob('~/.config/nvim/bundle/Vundle.vim'))
 	silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
-	autocmd VimEnter * PluginInstall --sync | source $MYVIMRC
+	autocmd VimEnter PluginInstall --sync | source $MYVIMRC
 endif
 
 if empty(glob('~/.config/nvim/bundle/wildfire.vim/autoload/wildfire.vim'))
-	autocmd VimEnter * PluginInstall --sync | source $MYVIMRC
+	autocmd VimEnter PluginInstall --sync | source $MYVIMRC
 endif
 
 "==============================    一、基础设置    ==============================
