@@ -181,7 +181,8 @@ let g:tex_flavor = 'latex'
 
 " ===
 " === skim pdf config
-" === 这样配置后，我们就可以通过 vimtex 默认的 \lv 快捷键（在按住 \ 的时候，连续点击 l 和 v）来正向同步当前 Neovim 光标位置到 PDF 预览位置，也可以通过「Ctrl + 点击 PDF 预览相应位置」来反向同步 Neovim 光标位置了
+" === 这样配置后，我们就可以通过 vimtex 默认的 \lv 快捷键（在按住 \ 的时候，连续点击 l 和 v）来正向同步当前 Neovim 光标位置到 PDF 预览位置
+" 也可以通过「shift + command + 点击 PDF 预览相应位置」来反向同步 Neovim 光标位置了
 let g:vimtex_view_general_viewer
 \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
 let g:vimtex_view_general_options = '-r @line @pdf @tex'
